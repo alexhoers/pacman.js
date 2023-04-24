@@ -1,0 +1,43 @@
+.loadingLabel {
+    font-size: 25px;
+    font-weight: bold;
+    position: absolute;
+    left: 220px;
+    top: 150px;
+}
+
+.text {
+    font-family: "Courier New"
+}
+
+#grid {
+    display: grid;
+    grid-template-columns: repeat(28, 26px);
+    grid-template-rows: repeat(31, 26px);
+    width: 728px; 
+    height: 806px;
+    background-color: black;
+    position: relative;
+    background-image: url('../images/maze.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+body {
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+#element {
+    position: absolute;
+    top: 26px;
+    left: 26px;
+    width: 26px;
+    height: 26px;
+    background-color: yellow;
+    border-radius: 50%;
+    transition: top 0.2s ease-out, left 0.2s ease-out;
+}
