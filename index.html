@@ -1,29 +1,25 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>pacman.js</title>
+  <head>
+    <title>pacman.js</title>
     <script src="src/movement.js"></script>
     <script src="src/pacman.js"></script>
     <!-- <script src="/socket.io/socket.io.js"></script> -->
     <link rel="stylesheet" href="src/styles/styles.css" />
-</head>
-<body>
-	<div id="grid"></div>
-	<script>
-		(function () {
+  </head>
+  <body>
+    <div id="grid"></div>
+    <script>
+      (function () {
+        let gameConfig = {
+          gridSizeX: 28,
+          gridSizeY: 31,
+          pixelSizeX: 26, // 8 for normal size 728
+          pixelSizeY: 26, // 8 for normal size 806
+        };
 
-			let gameConfig = {
-				gridSizeX   : 28, 
-				gridSizeY   : 31,  
-				pixelSizeX   : 26, // 8 for normal size 728
-				pixelSizeY   : 26 // 8 for normal size 806
-
-        	}
-
-			const game = new Game(gameConfig); 
-
-			
-		}());
-	</script>
-</body>
+        const game = new Game(gameConfig);
+      })();
+    </script>
+  </body>
 </html>
