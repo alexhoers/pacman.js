@@ -6,7 +6,8 @@ class Game {
   static gridConfig = {
     WALL: "W",
     EMPTY: " ",
-    DOT: ".",
+    DOT: "o",
+    POWERPELLET: "O",
     FRUIT: "F",
     PACMAN: "P",
     GHOST: "G",
@@ -53,17 +54,49 @@ class Game {
     ];
 
     this.maze.forEach((row, rowIndex) => {
-      this.maze[rowIndex] = row[0].split('');
-  });
+      this.maze[rowIndex] = row[0].split("");
+    });
+
+    this.initializeDots();
 
     this.reset();
   }
 
   initializeMaze() {}
 
-  initializeDots() {}
+  initializeDots() {
+    let mazeRow = [];
+    let item
 
-  placeFruits() {}
+    this.maze.forEach((mazeRow, mazeRowIndex) => {
+      console.log(mazeRow);
+
+      mazeRow.forEach((mazeCol, mazeColIndex) => {
+        if (mazeRow[mazeColIndex] === Game.gridConfig.DOT)
+        
+          this.positionDot(mazeRowIndex, mazeColIndex);
+      })
+    })
+  }
+
+  positionDot(y, x) {
+
+    let grid = document.getElementById("grid");
+
+    let dot = document.createElement("div");
+
+    grid.appendChild(dot);
+
+    dot.className = "dot"
+
+    dot.style.top = y * 26 + 13 - 3 + "px"; // position + half distance - radius
+
+    dot.style.left = x * 26 + 13 - 3 + "px";
+  }
+
+  placeFruits() {
+    
+  }
 
   reset() {
     this.pacman = new Pacman(this.maze); // this.scaledTileSize, this.mazeArray, new CharacterUtil(),
@@ -74,16 +107,22 @@ class Pacman {
   constructor(maze) {
     this.grid = document.getElementById("grid");
     this.element = document.createElement("div");
+    
     // Initialize the element position
-    this.posY = 1;
-    this.posX = 1;
+    this.posY = 17;
+    this.posX = 13;
 
     this.maze = maze;
 
     this.element.id = "element";
     this.grid.appendChild(this.element);
 
+    this.element.style.top = this.posY * 26 + "px";
+
+    this.element.style.left = this.posX * 26 + "px";
+
     this.registerEventListeners();
+
   }
 
   registerEventListeners() {
@@ -97,15 +136,10 @@ class Pacman {
           }
           break;
         case CharacterUtil.keybindings.DOWN:
-          clearInterval()
-          setInterval(()=> {
-            if (this.getTile(this.posY + 1, this.posX, this.maze)) {
-              this.posY += 1;
-              this.element.style.top = this.posY * 26 + "px";
-              console.log(this.posY + ", " + this.posX)
-            }
-          
-          }, 500)
+          if (this.getTile(this.posY + 1, this.posX, this.maze)) {
+            this.posY += 1;
+            this.element.style.top = this.posY * 26 + "px";
+          }
           break;
         case CharacterUtil.keybindings.LEFT:
           if (this.getTile(this.posY, this.posX - 1, this.maze)) {
@@ -117,14 +151,14 @@ class Pacman {
           if (this.getTile(this.posY, this.posX + 1, this.maze)) {
             this.posX += 1;
             this.element.style.left = this.posX * 26 + "px";
-          } 
+          }
       }
     });
   }
-  
+
   getTile(y, x, maze) {
     if (maze[y] && maze[y][x] && maze[y][x] != Game.gridConfig.WALL) {
-      return {y, x}
+      return { y, x };
     }
   }
 
@@ -132,25 +166,24 @@ class Pacman {
 }
 
 class CharacterUtil {
-
   static keybindings = {
     UP: "ArrowUp",
     DOWN: "ArrowDown",
     LEFT: "ArrowLeft",
-    RIGHT: "ArrowRight"
-  }
+    RIGHT: "ArrowRight",
+  };
 
   movementKeys = {
     // WASD
-    87: 'up',
-    83: 'down',
-    65: 'left',
-    68: 'right',
+    87: "up",
+    83: "down",
+    65: "left",
+    68: "right",
 
     // Arrow Keys
-    38: 'up',
-    40: 'down',
-    37: 'left',
-    39: 'right',
-};
+    38: "up",
+    40: "down",
+    37: "left",
+    39: "right",
+  };
 }

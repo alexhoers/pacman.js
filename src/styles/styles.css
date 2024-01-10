@@ -26,6 +26,7 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+
 body {
   background-color: black;
   display: flex;
@@ -44,4 +45,13 @@ body {
   background-color: yellow;
   border-radius: 50%;
   transition: top 1s ease-out, left 1s ease-out;
+}
+
+.dot {
+  position: absolute;
+  background-image: url(../images/pacdot.svg);
+  height: 6px;
+  width: 6px;
+  visibility: visible;
+  justify-content: center;
 }
