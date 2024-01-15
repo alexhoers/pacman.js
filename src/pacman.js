@@ -57,6 +57,8 @@ class Game {
       this.maze[rowIndex] = row[0].split("");
     });
 
+    this.preloadAssets();
+
     this.initializeDots();
 
     this.reset();
@@ -97,6 +99,94 @@ class Game {
   placeFruits() {
     
   }
+
+  /**
+   * Load all assets into a hidden Div to pre-load them into memory.
+   * There is probably a better way to read all of these file names.
+   */
+  preloadAssets() {
+    return new Promise((resolve) => {
+        const loadingContainer = document.getElementById('loading-container');
+        const loadingPacman = document.getElementById('loading-pacman');
+        const loadingDotMask = document.getElementById('loading-dot-mask');
+        
+        const totalSources = 2000;
+
+        let remainingSources = totalSources;
+
+        loadingPacman.style.left = '0';
+        loadingDotMask.style.width = '0';
+
+        Promise.all([
+            this.createElements()
+        ]).then(() => {
+            loadingContainer.style.opacity = 0;
+            resolve();
+
+            setTimeout(() => {
+              this.placeGrid();
+              loadingContainer.remove();
+              //this.mainMenu.style.opacity = 1;
+              //this.mainMenu.style.visibility = 'visible';
+              
+              /*if( !isSafari() ) {
+                  this.startButtonClick();
+              }*/
+            }, 1500);
+        }).catch(this.displayErrorMessage);
+    });
+}
+
+placeGrid() {
+  const gridContainer = document.getElementById('grid');
+  gridContainer.style.display = 'grid'; 
+}
+
+createElements() {
+  const loadingContainer = document.getElementById('loading-container');
+  // const preloadDiv = document.getElementById('preload-div');
+  const loadingPacman = document.getElementById('loading-pacman');
+  const containerWidth = loadingContainer.scrollWidth
+          - loadingPacman.scrollWidth;
+  const loadingDotMask = document.getElementById('loading-dot-mask');
+
+  // const gameCoordRef = gameCoord;
+
+  return new Promise((resolve, reject) => {
+      let loadedSources = 0;
+      
+      let totalSources = 200;
+
+      let remainingSources = totalSources;
+
+      let sources = Array.from('x'.repeat(totalSources))
+
+      sources.forEach((source, idx) => {
+
+
+
+          // preloadDiv.appendChild(element);
+
+          const elementReady = () => {
+              remainingSources -= 1;
+              loadedSources += 1;
+              const percent = 1 - (remainingSources / totalSources);
+              loadingPacman.style.left = `${percent * containerWidth}px`;
+              loadingDotMask.style.width = loadingPacman.style.left;
+
+              console.log(percent)
+              console.log(loadingPacman.style.left)
+              console.log(loadingDotMask.style.width)
+              console.log(idx)
+
+              if (loadedSources === sources.length) {
+                  resolve();
+              }
+          };
+          elementReady()
+      });
+  });
+}
 
   reset() {
     this.pacman = new Pacman(this.maze); // this.scaledTileSize, this.mazeArray, new CharacterUtil(),
