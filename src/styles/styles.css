@@ -161,3 +161,17 @@ body {
 
 ._95 {
   left: 95%; }
+
+#right-pacman {
+  animation: loading-animation 0.3s steps(4) infinite;
+  background-color: #000;
+  background-image: url("../images/pacman_right.svg");
+  background-size: 192px;
+  border-radius: 10px;
+  height: 48px;
+  position: absolute;
+  transition: left 1s;
+  width: 48px;
+  bottom: 10px;
+  z-index: 6; 
+}

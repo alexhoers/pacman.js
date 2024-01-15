@@ -138,8 +138,8 @@ class Game {
 }
 
 placeGrid() {
-  const gridContainer = document.getElementById('grid');
-  gridContainer.style.display = 'grid'; 
+         const gridContainer = document.getElementById('grid');
+              gridContainer.style.display = 'grid'; 
 }
 
 createElements() {
@@ -204,7 +204,7 @@ class Pacman {
 
     this.maze = maze;
 
-    this.element.id = "element";
+    this.element.id = "right-pacman";
     this.grid.appendChild(this.element);
 
     this.element.style.top = this.posY * 26 + "px";
