@@ -175,3 +175,57 @@ body {
   bottom: 10px;
   z-index: 6; 
 }
+
+#left-pacman {
+  animation: loading-animation 0.3s steps(4) infinite;
+  background-color: #000;
+  background-image: url("../images/pacman_right.svg");
+  rotate: 180deg;
+  background-size: 192px;
+  border-radius: 10px;
+  height: 48px;
+  position: absolute;
+  transition: left 1s;
+  width: 48px;
+  bottom: 10px;
+  z-index: 6; 
+}
+
+#top-pacman {
+  animation: loading-animation 0.3s steps(4) infinite;
+  background-color: #000;
+  background-image: url("../images/pacman_right.svg");
+  rotate: 270deg;
+  background-size: 192px;
+  border-radius: 10px;
+  height: 48px;
+  position: absolute;
+  transition: top 1s;
+  width: 48px;
+  bottom: 10px;
+  z-index: 6; 
+}
+
+#down-pacman {
+  animation: loading-animation 0.3s steps(4) infinite;
+  background-color: #000;
+  background-image: url("../images/pacman_right.svg");
+  rotate: 90deg;
+  background-size: 192px;
+  border-radius: 10px;
+  height: 48px;
+  position: absolute;
+  transition: top 1s;
+  width: 48px;
+  bottom: 10px;
+  z-index: 6; 
+}
+
+
+#up-pacman {
+
+}
+
+#down-pacman {
+
+}

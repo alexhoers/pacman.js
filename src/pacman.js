@@ -196,20 +196,11 @@ createElements() {
 class Pacman {
   constructor(maze) {
     this.grid = document.getElementById("grid");
-    this.element = document.createElement("div");
+    this.pacman = document.createElement("div");
     
-    // Initialize the element position
-    this.posY = 17;
-    this.posX = 13;
-
     this.maze = maze;
 
-    this.element.id = "right-pacman";
-    this.grid.appendChild(this.element);
-
-    this.element.style.top = this.posY * 26 + "px";
-
-    this.element.style.left = this.posX * 26 + "px";
+    this.setStartingPosition();
 
     this.registerEventListeners();
 
@@ -222,25 +213,29 @@ class Pacman {
         case CharacterUtil.keybindings.UP:
           if (this.getTile(this.posY - 1, this.posX, this.maze)) {
             this.posY -= 1;
-            this.element.style.top = this.posY * 26 + "px";
+            this.pacman.style.top = this.posY * 26 - this.startingDescrepancy + "px";
+            this.pacman.id = "top-pacman";
           }
           break;
         case CharacterUtil.keybindings.DOWN:
           if (this.getTile(this.posY + 1, this.posX, this.maze)) {
             this.posY += 1;
-            this.element.style.top = this.posY * 26 + "px";
+            this.pacman.style.top = this.posY * 26 - this.startingDescrepancy  + "px";
+            this.pacman.id = "down-pacman";
           }
           break;
         case CharacterUtil.keybindings.LEFT:
           if (this.getTile(this.posY, this.posX - 1, this.maze)) {
             this.posX -= 1;
-            this.element.style.left = this.posX * 26 + "px";
+            this.pacman.style.left = this.posX * 26  - this.startingDescrepancy + "px";
+            this.pacman.id = "left-pacman";
           }
           break;
         case CharacterUtil.keybindings.RIGHT:
           if (this.getTile(this.posY, this.posX + 1, this.maze)) {
             this.posX += 1;
-            this.element.style.left = this.posX * 26 + "px";
+            this.pacman.style.left = this.posX * 26 - this.startingDescrepancy  + "px";
+            this.pacman.id = "right-pacman";
           }
       }
     });
@@ -252,7 +247,25 @@ class Pacman {
     }
   }
 
-  setStartingPosition() {}
+  setStartingPosition() {
+
+    // Initialize pacman element class
+    this.pacman.id = "right-pacman";
+
+    // Append node to grid
+    this.grid.appendChild(this.pacman);
+
+    // Defines the deviation in standard position of pacman
+    this.startingDescrepancy = 10;
+
+    // Initialize the element starting position
+    this.posY = 17;
+    this.posX = 14; 
+
+    this.pacman.style.top = this.posY * 26 - this.startingDescrepancy  + "px";
+
+    this.pacman.style.left = this.posX * 26 - this.startingDescrepancy + "px";
+  }
 }
 
 class CharacterUtil {
