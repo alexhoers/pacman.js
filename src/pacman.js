@@ -74,16 +74,20 @@ class Game {
       console.log(mazeRow);
 
       mazeRow.forEach((mazeCol, mazeColIndex) => {
-        if (mazeRow[mazeColIndex] === Game.gridConfig.DOT)
+        const gridElement = mazeRow[mazeColIndex];
+        if (gridElement === Game.gridConfig.DOT) {
+          this.placeDot(mazeRowIndex, mazeColIndex);
+        } else if (gridElement === Game.gridConfig.POWERPELLET) {
+          this.placePowerPellet(mazeRowIndex, mazeColIndex)
+        }
         
-          this.positionDot(mazeRowIndex, mazeColIndex);
       })
     })
   }
 
-  positionDot(y, x) {
+  placeDot(y, x) {
 
-    let grid = document.getElementById("grid");
+    this.grid = document.getElementById("grid");
 
     let dot = document.createElement("div");
 
@@ -94,6 +98,20 @@ class Game {
     dot.style.top = y * 26 + 13 - 3 + "px"; // position + half distance - radius
 
     dot.style.left = x * 26 + 13 - 3 + "px";
+  }
+
+  placePowerPellet(y, x) {
+    this.grid = document.getElementById("grid");
+
+    let powerPellet = document.createElement("div");
+
+    this.grid.appendChild(powerPellet);
+
+    powerPellet.className = "powerPellet"
+
+    powerPellet.style.top = y * 26 + 13 - 3 + "px"; // position + half distance - radius
+
+    powerPellet.style.left = x * 26 + 13 - 3 + "px";
   }
 
   placeFruits() {
@@ -208,7 +226,7 @@ class Pacman {
 
   registerEventListeners() {
     // Add event listener for arrow key presses
-    document.addEventListener("keydown", (event) => {
+    document.addEventListener("keydown", this.debounce( (event) => {
       switch (event.key) {
         case CharacterUtil.keybindings.UP:
           if (this.getTile(this.posY - 1, this.posX, this.maze)) {
@@ -238,7 +256,15 @@ class Pacman {
             this.pacman.id = "right-pacman";
           }
       }
-    });
+    }));
+  }
+
+  debounce(func, timeout = 100){
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
   }
 
   getTile(y, x, maze) {

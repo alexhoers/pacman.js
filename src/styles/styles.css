@@ -56,6 +56,16 @@ body {
   justify-content: center;
 }
 
+.powerpellet {
+  position: absolute;
+  background-size: 26px;
+  background-image: url(../images/powerPellet.svg);
+  height: 26px;
+  width: 26px;
+  visibility: visible;
+  animation: blink .3s infinite;
+}
+
 .loading-container {
   background-color: #000;
   border: 5px solid #2121ff;
