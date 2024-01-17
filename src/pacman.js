@@ -71,7 +71,6 @@ class Game {
     let item
 
     this.maze.forEach((mazeRow, mazeRowIndex) => {
-      console.log(mazeRow);
 
       mazeRow.forEach((mazeCol, mazeColIndex) => {
         const gridElement = mazeRow[mazeColIndex];
@@ -93,7 +92,9 @@ class Game {
 
     grid.appendChild(dot);
 
-    dot.className = "dot"
+    dot.className = "dot";
+
+    dot.id = y + "" + x;
 
     dot.style.top = y * 26 + 13 - 3 + "px"; // position + half distance - radius
 
@@ -192,11 +193,6 @@ createElements() {
               loadingPacman.style.left = `${percent * containerWidth}px`;
               loadingDotMask.style.width = loadingPacman.style.left;
 
-              console.log(percent)
-              console.log(loadingPacman.style.left)
-              console.log(loadingDotMask.style.width)
-              console.log(idx)
-
               if (loadedSources === sources.length) {
                   resolve();
               }
@@ -226,45 +222,82 @@ class Pacman {
 
   registerEventListeners() {
     // Add event listener for arrow key presses
-    document.addEventListener("keydown", this.debounce( (event) => {
+    document.addEventListener("keydown", debounce( (event) => {
+      let nextMazeElement;
       switch (event.key) {
         case CharacterUtil.keybindings.UP:
-          if (this.getTile(this.posY - 1, this.posX, this.maze)) {
-            this.posY -= 1;
-            this.pacman.style.top = this.posY * 26 - this.startingDescrepancy + "px";
-            this.pacman.id = "top-pacman";
-          }
+          nextMazeElement = this.moveUp();
           break;
         case CharacterUtil.keybindings.DOWN:
-          if (this.getTile(this.posY + 1, this.posX, this.maze)) {
-            this.posY += 1;
-            this.pacman.style.top = this.posY * 26 - this.startingDescrepancy  + "px";
-            this.pacman.id = "down-pacman";
-          }
+          nextMazeElement = this.moveDown();
           break;
         case CharacterUtil.keybindings.LEFT:
-          if (this.getTile(this.posY, this.posX - 1, this.maze)) {
-            this.posX -= 1;
-            this.pacman.style.left = this.posX * 26  - this.startingDescrepancy + "px";
-            this.pacman.id = "left-pacman";
-          }
+          nextMazeElement = this.moveLeft();
           break;
         case CharacterUtil.keybindings.RIGHT:
-          if (this.getTile(this.posY, this.posX + 1, this.maze)) {
-            this.posX += 1;
-            this.pacman.style.left = this.posX * 26 - this.startingDescrepancy  + "px";
-            this.pacman.id = "right-pacman";
-          }
+          nextMazeElement = this.moveRight();
+      }
+      if (this.isDot(nextMazeElement)) {
+        this.eatDot();
       }
     }));
   }
 
-  debounce(func, timeout = 100){
-    let timer;
-    return (...args) => {
-      clearTimeout(timer);
-      timer = setTimeout(() => { func.apply(this, args); }, timeout);
-    };
+  moveUp() {
+    const mazeElement = this.getMazeElement(this.posY - 1, this.posX);
+    if (!this.isWall(mazeElement)) {
+      this.posY -= 1;
+      this.pacman.style.top = this.posY * 26 - this.startingDescrepancy + "px";
+      this.pacman.id = "top-pacman";
+    }
+    return mazeElement;
+  }
+
+  moveDown() {
+    const mazeElement = this.getMazeElement(this.posY + 1, this.posX)
+    if (!this.isWall(mazeElement)) {
+      this.posY += 1;
+      this.pacman.style.top = this.posY * 26 - this.startingDescrepancy  + "px";
+      this.pacman.id = "down-pacman";
+    }
+    return mazeElement;
+  }
+
+  moveLeft() {
+    const mazeElement = this.getMazeElement(this.posY, this.posX - 1)
+    if (!this.isWall(mazeElement)) {
+      this.posX -= 1;
+      this.pacman.style.left = this.posX * 26  - this.startingDescrepancy + "px";
+      this.pacman.id = "left-pacman";
+    }
+    return mazeElement;
+  }
+
+  moveRight() {
+    const mazeElement = this.getMazeElement(this.posY, this.posX + 1)
+    if (!this.isWall(mazeElement)) {
+      this.posX += 1;
+      this.pacman.style.left = this.posX * 26 - this.startingDescrepancy  + "px";
+      this.pacman.id = "right-pacman";
+    }
+    return mazeElement;
+  }
+
+  eatDot() {
+    const dot = document.getElementById(this.posY + "" + this.posX);
+    dot.style.display = "none";
+  }
+
+  getMazeElement(y, x) {
+    return this.maze[y][x];
+  }
+
+  isWall(element) {
+    return element == Game.gridConfig.WALL;
+  }
+
+  isDot(element) {
+    return element == Game.gridConfig.DOT;
   }
 
   getTile(y, x, maze) {
@@ -314,5 +347,13 @@ class CharacterUtil {
     40: "down",
     37: "left",
     39: "right",
+  };
+}
+
+function debounce(func, timeout = 100){
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => { func.apply(this, args); }, timeout);
   };
 }
