@@ -61,7 +61,10 @@ class Game {
 
     this.initializeDots();
 
+    beginGame();
+
     this.reset();
+
   }
 
   initializeMaze() {}
@@ -350,10 +353,19 @@ class CharacterUtil {
   };
 }
 
-function debounce(func, timeout = 100){
+function debounce(func, timeout = 300){
   let timer;
   return (...args) => {
     clearTimeout(timer);
     timer = setTimeout(() => { func.apply(this, args); }, timeout);
   };
+}
+
+function beginGame() {
+  let timerCounter = 0;
+  const timerCounterDiv = document.getElementById("timer-counter");
+  timerCounterDiv.style.display = "static";
+  setInterval(() => {
+    timerCounterDiv.innerHTML = timerCounter++;
+  }, 1000)
 }

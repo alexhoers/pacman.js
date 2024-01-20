@@ -239,3 +239,27 @@ body {
 #down-pacman {
 
 }
+
+.timer {
+  color: white;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.sidebar {
+  width:512px;
+  height:100%;
+}
+
+.top {
+  margin: 20px;
+  height: 256px;
+  border:  #2121DE solid 3px;
+  border-radius: 15px;
+}
+
+.bottom {
+  margin: 20px;
+  height: 512px;
+  border: #2121DE solid 3px;
+  border-radius: 15px;
+}
